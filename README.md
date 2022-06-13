@@ -1,1 +1,1 @@
-# kps-test
+### Rock-Paper-Scissors Node.js exercise
