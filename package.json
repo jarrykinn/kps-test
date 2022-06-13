@@ -1,0 +1,14 @@
+{
+  "name": "kps",
+  "version": "1.0.0",
+  "description": "Kivi Paperi Sakset",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app/kps.js"
+  },
+  "author": "jari.kinnunen@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}

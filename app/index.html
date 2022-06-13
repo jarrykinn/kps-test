@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h2>Rock - Paper - Scissors (Kivi - Paperi - Sakset)</h2>
+    <p id="output">... no rounds played yet ...</p>
+
+    <table>
+        <th>
+            <button id="btn-restart">Re-Start Game</button>
+        </th>
+        <th>
+            <button id="btn-results">Results</button>
+        </th>
+    </table>
+
+    <hr>
+    </hr>
+
+    <table>
+        <th>
+            <form id="playRock" action="javascript:callPlayRock()">
+                <input type="hidden" id="rock" name="played" value="rock">
+                <input type="submit" value="Kivi (Rock)">
+            </form>
+        </th>
+        <th>
+            <form id="playPaper" action="javascript:callPlayPaper()">
+                <input type="hidden" id="paper" name="played" value="paper">
+                <input type="submit" value="Paperi (Paper)">
+            </form>
+        </th>
+        <th>
+            <form id="playScissors" action="javascript:callPlayScissors()">
+                <input type="hidden" id="scissors" name="played" value="scissors">
+                <input type="submit" value="Sakset (Scissors)">
+            </form>
+        </th>
+    </table>
+
+    <script>
+        console.log("#1");
+        const callRestart = (formData) => {
+            fetch("/restart", {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => document.getElementById("output").innerHTML = data.output)
+        }
+        document.getElementById("btn-restart").addEventListener("click", callRestart);
+
+        const callResults = (formData) => {
+            fetch("/results", {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => document.getElementById("output").innerHTML = data.output)
+        }
+        document.getElementById("btn-results").addEventListener("click", callResults);
+
+        function callPlayRock() {
+            // get data from the submitted form
+            const formData = new FormData(document.getElementById('playRock'));
+            postPlay(formData);
+        }
+
+        function callPlayPaper() {
+            // get data from the submitted form
+            const formData = new FormData(document.getElementById('playPaper'));
+            postPlay(formData);
+        }
+
+        function callPlayScissors() {
+            // get data from the submitted form
+            const formData = new FormData(document.getElementById('playScissors'));
+            postPlay(formData);
+        }
+
+        function postPlay(formData) {
+            var formBody = [];
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+                formBody.push(pair[0] + "=" + pair[1]);
+            }
+            var formStringified = formBody.join("&");
+            console.log("#S: %o", formStringified);
+            fetch("/play", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                },
+                body: formBody.join("&") // serialized
+            })
+                .then(response => response.json())
+                .then(data => document.getElementById("output").innerHTML = data.output)
+        }
+    </script>
+</body>
+
+</html>
