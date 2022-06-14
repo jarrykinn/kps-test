@@ -8,9 +8,9 @@ let round = -1;
 var roundResults = [];
 var response = {};
 const PLAY_NAMES = ["ROCK", "PAPER", "SCISSORS"];
-const VROCK = 0;      // 'rock' ID
-const VPAPER = 1;     // 'paper' ID
-const VSCISSORS = 2;  // 'scissors' ID
+const VROCK = 0; // 'rock' ID
+const VPAPER = 1; // 'paper' ID
+const VSCISSORS = 2; // 'scissors' ID
 const PLAYER_WINS = 0;
 const COMPUTER_WINS = 1;
 
@@ -94,12 +94,14 @@ app.post("/play", (req, res) => {
       "<br>" +
       logWinnerString(roundData.result) +
       "<br>" +
-      "rounds played: " + playedRounds;
+      "rounds played: " +
+      playedRounds;
     roundResults[round] = roundData;
     response["output"] = roundData.log;
   } else {
     let playedRounds = round + 1;
-    response["output"] = "DRAW, try again! <br>" + "rounds played: " + playedRounds;
+    response["output"] =
+      "DRAW, try again! <br>" + "rounds played: " + playedRounds;
   }
   logRoundResults();
   res.setHeader("Content-Type", "application/json");
