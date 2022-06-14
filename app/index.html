@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<head>
+<style>
+    .crop-container {
+        width: 40%;
+        padding-right: 10px;
+    /*height: 10%;*/
+    overflow: hidden;
+}
+</style>
+</head>
 <html>
 
 <body>
@@ -6,9 +16,9 @@
     <h2>Rock - Paper - Scissors (Kivi - Paperi - Sakset)</h2>
     <p id="output">... no rounds played yet ...</p>
 
-    <table>
+    <table style="width:30%">
         <th>
-            <button id="btn-restart">Re-Start Game</button>
+            <button id="btn-restart">Restart Game</button>
         </th>
         <th>
             <button id="btn-results">Results</button>
@@ -18,23 +28,23 @@
     <hr>
     </hr>
 
-    <table>
+    <table style="width:50%">
         <th>
             <form id="playRock" action="javascript:callPlayRock()">
                 <input type="hidden" id="rock" name="played" value="rock">
-                <input type="submit" value="Kivi (Rock)">
+                <input class="crop-container" type="image" src="rock.png" value="Kivi (Rock)">
             </form>
         </th>
         <th>
             <form id="playPaper" action="javascript:callPlayPaper()">
                 <input type="hidden" id="paper" name="played" value="paper">
-                <input type="submit" value="Paperi (Paper)">
+                <input class="crop-container" type="image" src="paper.png" value="Paperi (Paper)">
             </form>
         </th>
         <th>
             <form id="playScissors" action="javascript:callPlayScissors()">
                 <input type="hidden" id="scissors" name="played" value="scissors">
-                <input type="submit" value="Sakset (Scissors)">
+                <input class="crop-container" type="image" src="scissors.png" value="Sakset (Scissors)">
             </form>
         </th>
     </table>
@@ -43,7 +53,7 @@
         console.log("#1");
         const callRestart = (formData) => {
             fetch("/restart", {
-                method: "GET"
+                method: "POST"
             })
                 .then(response => response.json())
                 .then(data => document.getElementById("output").innerHTML = data.output)
