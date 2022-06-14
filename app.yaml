@@ -1,4 +1,6 @@
 runtime: nodejs16
 
-automatic_scaling:
+instance_class: B1
+basic_scaling:
   max_instances: 1
+  idle_timeout: 30s
