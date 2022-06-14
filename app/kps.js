@@ -17,8 +17,11 @@ const COMPUTER_WINS = 1;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static('icons'));
+app.use(express.static("icons"));
 
+/**
+ * Serve the index.html
+ */
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
@@ -51,7 +54,9 @@ app.get("/results", (req, res) => {
 app.post("/play", (req, res) => {
   console.log("played: %o", req.body.played);
   var player = -1;
-  switch (req.body.played) { // What did the player play
+  switch (
+    req.body.played // What did the player play
+  ) {
     case "rock":
       player = VROCK;
       break;
@@ -69,8 +74,9 @@ app.post("/play", (req, res) => {
   // Did we get a real result or just DRAW, which is skipped
   // Save the result in roundData
   // respond with some readable text
-  if (whoWins >= 0) { 
+  if (whoWins >= 0) {
     round++;
+    let playedRounds = round + 1;
     var roundData = {};
     roundData.result = whoWins;
     roundData.log =
@@ -79,11 +85,14 @@ app.post("/play", (req, res) => {
       " <b>< = ></b> Computer: " +
       playNames[computer] +
       "<br>" +
-      logWinnerString(roundData.result);
+      logWinnerString(roundData.result) +
+      "<br>" +
+      "rounds played: " + playedRounds;
     roundResults[round] = roundData;
     response["output"] = roundData.log;
   } else {
-    response["output"] = "DRAW, try again!";
+    let playedRounds = round + 1;
+    response["output"] = "DRAW, try again! <br>" + "rounds played: " + playedRounds;
   }
   logRoundResults();
   res.setHeader("Content-Type", "application/json");
@@ -98,9 +107,9 @@ app.listen(PORT, () => {
 
 /**
  * Play random rock, paper, scissors selection for the computer
- * @param {int} min 
- * @param {int} max 
- * @returns 
+ * @param {int} min
+ * @param {int} max
+ * @returns
  */
 function randomIntFromInterval(min, max) {
   // min and max included
@@ -109,10 +118,10 @@ function randomIntFromInterval(min, max) {
 
 /**
  * The rules for who wins
- * 
+ *
  * @param {int} player    // Player's selection
  * @param {int} computer  // Computer's selection
- * @returns 
+ * @returns
  */
 function whoDaresWins(player, computer) {
   if (player === computer) {
@@ -171,8 +180,8 @@ function logRoundResults() {
 
 /**
  * Just console.log and add some formatting for <table>
- * @param {String} input 
- * @returns 
+ * @param {String} input
+ * @returns
  */
 function logAndReturn(input) {
   console.log(input);
@@ -181,16 +190,14 @@ function logAndReturn(input) {
 
 /**
  * Format the winner string
- * 
- * @param {int} result 
- * @returns 
+ *
+ * @param {int} result
+ * @returns
  */
 function logWinnerString(result) {
-  if(result === PLAYER_WINS) {
-    return "<b>** YOU WIN **</b>"
+  if (result === PLAYER_WINS) {
+    return "<b>** YOU WIN **</b>";
   } else {
-    return "<b>** COMPUTER WINS **</b>"
+    return "<b>** COMPUTER WINS **</b>";
   }
 }
-
-
