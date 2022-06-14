@@ -2,10 +2,8 @@
 <head>
 <style>
     .crop-container {
-        width: 40%;
+        width: 50%;
         padding-right: 10px;
-    /*height: 10%;*/
-    overflow: hidden;
 }
 </style>
 </head>
@@ -14,6 +12,8 @@
 <body>
 
     <h2>Rock - Paper - Scissors (Kivi - Paperi - Sakset)</h2>
+
+    <!-- placeholder for server response texts -->
     <p id="output">... no rounds played yet ...</p>
 
     <table style="width:10%">
@@ -50,7 +50,7 @@
     </table>
 
     <script>
-        console.log("#1");
+        /* Handle Restart Game button => POST /restart */
         const callRestart = (formData) => {
             fetch("/restart", {
                 method: "POST"
@@ -60,6 +60,7 @@
         }
         document.getElementById("btn-restart").addEventListener("click", callRestart);
 
+        /* Handle Game Results button => GET /results */
         const callResults = (formData) => {
             fetch("/results", {
                 method: "GET"
@@ -69,24 +70,28 @@
         }
         document.getElementById("btn-results").addEventListener("click", callResults);
 
+        /* User plays 'rock' */
         function callPlayRock() {
             // get data from the submitted form
             const formData = new FormData(document.getElementById('playRock'));
             postPlay(formData);
         }
 
+        /* User plays 'paper' */
         function callPlayPaper() {
             // get data from the submitted form
             const formData = new FormData(document.getElementById('playPaper'));
             postPlay(formData);
         }
 
+        /* User plays 'scissors' */
         function callPlayScissors() {
             // get data from the submitted form
             const formData = new FormData(document.getElementById('playScissors'));
             postPlay(formData);
         }
 
+        /* Do the POST /play with the user selection */
         function postPlay(formData) {
             var formBody = [];
             for (var pair of formData.entries()) {
@@ -100,7 +105,7 @@
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 },
-                body: formBody.join("&") // serialized
+                body: formBody.join("&") // serialized as query params URL encoded
             })
                 .then(response => response.json())
                 .then(data => document.getElementById("output").innerHTML = data.output)

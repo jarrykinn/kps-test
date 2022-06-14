@@ -7,17 +7,24 @@ const { workerData } = require("worker_threads");
 let round = -1;
 var roundResults = [];
 var response = {};
-const playNames = ["ROCK", "PAPER", "SCISSORS"];
-const VROCK = 0;
-const VPAPER = 1;
-const VSCISSORS = 2;
+const PLAY_NAMES = ["ROCK", "PAPER", "SCISSORS"];
+const VROCK = 0;      // 'rock' ID
+const VPAPER = 1;     // 'paper' ID
+const VSCISSORS = 2;  // 'scissors' ID
 const PLAYER_WINS = 0;
 const COMPUTER_WINS = 1;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// configure /icons as static file folder
 app.use(express.static("icons"));
+
+// Listen to the specified port, or 8080 otherwise
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}...`);
+});
 
 /**
  * Serve the index.html
@@ -73,7 +80,7 @@ app.post("/play", (req, res) => {
 
   // Did we get a real result or just DRAW, which is skipped
   // Save the result in roundData
-  // respond with some readable text
+  // Respond with some readable text
   if (whoWins >= 0) {
     round++;
     let playedRounds = round + 1;
@@ -81,9 +88,9 @@ app.post("/play", (req, res) => {
     roundData.result = whoWins;
     roundData.log =
       "You played: " +
-      playNames[player] +
+      PLAY_NAMES[player] +
       " <b>< = ></b> Computer: " +
-      playNames[computer] +
+      PLAY_NAMES[computer] +
       "<br>" +
       logWinnerString(roundData.result) +
       "<br>" +
@@ -97,12 +104,6 @@ app.post("/play", (req, res) => {
   logRoundResults();
   res.setHeader("Content-Type", "application/json");
   res.send(JSON.stringify(response));
-});
-
-// Listen to the specified port, or 8080 otherwise
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}...`);
 });
 
 /**
